@@ -1,33 +1,44 @@
 <template>
-  <div id="cesiumContainer"></div>
+  <div id="cesiumContainer">
+    <!-- 使用 v-if 来确保 viewer 初始化完成后再渲染 LayerSwitch 组件 -->
+    <LayerSwitch v-if="viewer" :viewer="viewer" />
+  </div>
 </template>
 
 <script>
 /* eslint-disable */
+import { onMounted, ref } from "vue";
 import "../../public/Cesium/Widgets/widgets.css";
+import LayerSwitch from "./tools/layerSwitch.vue";
+
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
+  name: "OnlineMap",
+  components: {
+    LayerSwitch,
   },
-  data() {
-    return {
-      viewer: null,
+  setup() {
+    // 创建响应式的 viewer 对象
+    const viewer = ref(null);
+
+    // 初始化 Cesium Viewer
+    const initCesium = () => {
+      viewer.value = new Cesium.Viewer("cesiumContainer");
     };
-  },
-  methods: {
-    initCesium() {
-      // Create a new Viewer object
-      this.viewer = new Cesium.Viewer("cesiumContainer");
-    },
-  },
-  mounted() {
-    this.initCesium();
+
+    // 使用 onMounted 生命周期钩子
+    onMounted(() => {
+      console.log("OnlineMap mounted");
+      initCesium();
+    });
+
+    // 返回响应式数据和方法
+    return {
+      viewer,
+    };
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
