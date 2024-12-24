@@ -19,7 +19,8 @@
 <script>
 /* eslint-disable */
 import { onMounted, ref } from "vue";
-
+import { layerList } from "./layerList";
+import { ElMessage } from "element-plus";
 export default {
   name: "LayerSwitch",
   props: {
@@ -30,26 +31,7 @@ export default {
   },
   setup(props) {
     // 图层数据，包括名称、图标图片和链接
-    const layers = ref([
-      {
-        name: "卫星图",
-        image:
-          "https://webst01.is.autonavi.com/appmaptile?style=6&x=10&y=6&z=4",
-        url: "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
-      },
-      {
-        name: "海图",
-        image:
-          "http://inner.qdlimap.cn:9999/gisAssistant/wmts/grid_tile/local/seaMap/01_ch/bz_jd/4/8/9",
-        url: " http://inner.qdlimap.cn:9999/gisAssistant/wmts/grid_tile/local/seaMap/01_ch/bz_jd/{z}/{y}/{x}",
-      },
-      {
-        name: "矢量图",
-        image:
-          "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x=8&y=4&z=4",
-        url: "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
-      },
-    ]);
+    const layers = ref(layerList);
 
     // 当前激活的图层索引
     const activeLayerIndex = ref(0);
@@ -59,6 +41,21 @@ export default {
       activeLayerIndex.value = index;
       const selectedLayer = layers.value[index];
       addLayerToViewer(selectedLayer.url);
+      copyUrl(selectedLayer.url);
+    };
+    const copyUrl = (url) => {
+      //复制URL到剪贴板
+      const input = document.createElement("input");
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+
+      ElMessage({
+        message: url + " 已复制到剪贴板",
+        type: "success",
+      });
     };
 
     // 添加选中的图层到 Cesium viewer

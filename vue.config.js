@@ -4,6 +4,6 @@ module.exports = defineConfig({
   devServer: {
     // 自定义服务配置
     open: true, // 自动打开浏览器
-    // port: 5731,
+    port: 9878,
   },
 });

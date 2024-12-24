@@ -22,7 +22,22 @@ export default {
 
     // 初始化 Cesium Viewer
     const initCesium = () => {
-      viewer.value = new Cesium.Viewer("cesiumContainer");
+      viewer.value = new Cesium.Viewer("cesiumContainer", {
+        animation: false,
+        homeButton: false,
+        geocoder: false,
+        baseLayerPicker: false,
+        timeline: false,
+        fullscreenButton: false,
+        scene3DOnly: false,
+        infoBox: false,
+        sceneModePicker: false,
+        navigationInstructionsInitiallyVisible: true,
+        navigationHelpButton: false,
+        selectionIndicator: false,
+        requestRenderMode: true,
+        maximumRenderTimeChange: Infinity,
+      });
     };
 
     // 使用 onMounted 生命周期钩子
@@ -40,6 +55,13 @@ export default {
 </script>
 
 <style scoped>
+#cesiumContainer {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 h3 {
   margin: 40px 0 0;
 }
